@@ -1,0 +1,37 @@
+{% extends "layout.html" %}
+{% block title %}displayItems{% endblock %}
+
+{% block content %}
+  <h2>Displaying Items...</h2>
+  <caption>Table of items in db.</caption>
+  {% if items %}
+    <table>
+      <dd>
+        <tr>
+          <td>No.</td>
+          <td>Name</td>
+        </tr>
+        {% for item in items %}
+        <tr>
+          <td>{{ loop.index }}</td>
+          <td>{{ item }}</td>
+        </tr>
+        {% endfor %}
+        <tr>
+          <td colspan="2" ><a href="{{ url_for('editItems') }}">edit/delete items</a></td>
+        </tr>
+      </dd>
+    </table>
+    <br>
+    <a href="{{ url_for('addItems') }}">Add items</a><br>
+    <a href="{{ url_for('displaySoldRecords') }}">Go to sold records</a>
+  {% else %}
+      <p>Sorry, but there are not item in db yet.</p>
+      <p>Do you want to add items?</p>
+      <p><a href="{{ url_for('addItems') }}">Add Items</a></p>
+  {% endif %}
+{% endblock %}
+
+{% block footer %}
+  <a href="{{ url_for('index') }}">Go back to home page.</a>
+{% endblock %}

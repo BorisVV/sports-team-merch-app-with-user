@@ -1,0 +1,21 @@
+.content {
+  margin: 4.0em 12.0em;
+}
+
+.footer {
+  border: 1px solid black;
+  padding: .5em;
+  margin: 0% 12.0em; width: 18%;
+  text-align: center;
+}
+
+.notes_footer{
+  margin: 0% 12.0em;
+}
+
+table, th, td {
+  text-align: left;
+  border: 1px solid black;
+  border-collapse: collapse;
+  padding: 8px;
+}

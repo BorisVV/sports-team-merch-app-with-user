@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    {% block head %}
+      <link rel="stylesheet" \
+            href="{{ url_for('static', filename='style.css') }}">
+      <meta charset="utf-8">
+      <meta name="viewport" \
+            content="width=device-width, initial-scale=1, shrink-to-fit=no">
+      <script type=text/javascript \
+      src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js">
+      </script>
+      <title>{% block title %}Welcome{% endblock %}</title>
+    {% endblock %}
+  </head>
+
+  <body>
+    <div class="content">
+      {% block content %}{% endblock %}
+
+      {% with messages = get_flashed_messages() %}
+      {% if messages %}
+      <ul class=flashes>
+        {% for message in messages %}
+        <li>{{ message|safe }}</li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+      {% endwith %}
+    </div>
+  </body>
+
+  <footer>
+    <div class="footer">
+      {% block footer %}
+        <a href="{{ url_for('addItems') }}">Add an Items</a><br>
+        <a href="{{ url_for('addDates') }}">Add Dates for Games</a><br>
+        <a href="{{ url_for('addSoldRecord') }}">Add Sold Record</a><br>
+        <a href="{{ url_for('displayItems') }}">Display/Edit Items</a><br>
+        <a href="{{ url_for('displayGameSched') }}">Display/Edit Game's Dates</a><br>
+        <a href="{{ url_for('displaySoldRecords') }}"> Display/Edit Sold Records</a><br>
+      {% endblock %}
+    </div>
+
+    <div class="notes_footer">
+      {% block notes %}{% endblock %}
+      <p>Created by: BorisVV</p>
+      <a href="http://jinja.pocoo.org/docs/2.10/api/#basics">jinja...#basics</a><br>
+      <a href="http://flask.pocoo.org/">flask.pocoo.org</a>
+    </div>
+  </footer>
+</html>

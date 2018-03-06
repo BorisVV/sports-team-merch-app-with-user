@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+{% block title %}AddDates{% endblock %}
+
+{% block content %}
+  <h2>Add date, city, and state...</h2>
+  <form method="post">
+    <dd>
+      <dl>
+        <dt>Enter date:</dt>
+        <input type="date" name="date_game" value="{{ date_game }}" size="20">
+        <dt>Enter City:</dt>
+        <input type="text" name="city" value="{{ city }}" size="20">
+        <dt>Enter State: (e.g. MN)</dt>
+        <input type="text" name="state" value="{{ state }}" size="2" max="2">
+        <br><br>
+        <input type="submit" name="save" value="Save">
+        <input type="submit" name="cancel" value="Cancel">
+      </dl>
+      <a href="{{ url_for('displayGameSched') }}">Display/Edit Game's Dates.</a>
+    </dd>
+  </form>
+{% endblock %}
+{% block footer %}
+<a href="{{ url_for('index') }}">Go back to home page.</a>
+{% endblock %}

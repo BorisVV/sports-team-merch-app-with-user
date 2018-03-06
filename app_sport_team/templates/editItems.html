@@ -1,0 +1,48 @@
+{% extends "layout.html" %}
+{% block title %}EditItems{% endblock %}
+
+{% block content %}
+  <script type=text/javascript>
+    $(function() {
+      $('input[name="delete"]').click(function() {
+        if (!confirm("Do you really want to delete this Item?\n\n" +
+                    "!!!WARNING!!! \n\n" +
+                    "DELETING THIS ITEM WILL DELETE ROWS THAT CONTAIN THIS ITEM IN SOLD RECORDS!"))
+          return false;
+      });
+    });
+  </script>
+
+  <h2>Edit/Delete Items...</h2>
+
+  <p>!!Warning!! Deleting an item, will delete the ones in sold records too.</p>
+
+  <form  method=post>
+    <dl>
+      <h4>Select one from the drop down box:</h4>
+      <select class="" name="name_selected">
+        {% for element in items %}
+          <!-- <option {% if element.id %} selected {% endif %} -->
+          <option
+            value="{{ element.id }}" {% if element.id == item_id %} selected {% endif %}>{{ element.name }}
+          </option>
+        {% endfor %}
+      </select>
+      <sup>Click to <a href="{{ url_for('addItems') }}">add new items</a> </sup>
+
+      <dt><sub>Update selected item with new name here.</sub></dt>
+      <input type="text" name="new_name" value="{{ new_name }}"><br>
+
+      <br>
+      <input type="submit" name="update" value="Update name">
+      <input type="submit" name="delete" value="Delete">
+      <input type="submit" value="Cancel">
+    </dl>
+    <a href="{{ url_for('displayItems') }}">Display all items</a><br>
+    <a href="{{ url_for('displaySoldRecords') }}">Display sold records</a>
+  </form>
+{% endblock %}
+
+{% block footer %}
+<a href="{{ url_for('index') }}">Go back to home page.</a>
+{% endblock %}

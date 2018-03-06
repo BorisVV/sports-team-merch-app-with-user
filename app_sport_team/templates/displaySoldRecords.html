@@ -1,0 +1,42 @@
+{% extends "layout.html" %}
+{% block title %}DisplayRecords{% endblock %}
+
+{% block content %}
+  {% if itemsSold|length() == 0 %}
+  <p><h2>No records of sold items in database yet!</h2><br>
+    Do you want to add some? <br>
+    <a href="{{ url_for('addSoldRecord' )}}">Click here</a>
+  </p>
+  {% else %}
+    <h2>Displaying Sold Records...</h2>
+    <p>This is the table that stores the data for each of the games.</p>
+    <table>
+        <caption>Table of sold items!</caption>
+        <tr>
+          <th>No.</th>
+          <th>Name</th>
+          <th>Date</th>
+          <th>City/State</th>
+          <th>QtySold</th>
+          <th>Price/Unit</th>
+          <th>Total</th>
+        </tr>
+        {% for row in itemsSold %}
+        <tr>
+          <td>{{ loop.index }}</td>
+          <td>{{ row.items.name}}</td>
+          <td>{{ row.schedules._date|dateformat }}</td>
+          <td>{{ row.schedules.city }}, {{ row.schedules.state }}</td>
+          <td>{{ row.qty }}</td>
+          <td>${{ row.price }}</td>
+          <td>{{ '$ '|safe }} {{ row.totalCost() }}</td>
+          <td><a href="{{ row.url }}">edit/delete</a></td>
+        </tr>
+        {% endfor %}
+    </table>
+    <p>Do you want to add a new record?   <a href="{{ url_for('addSoldRecord') }}">Click here</a> </p>
+  {% endif %}
+{% endblock %}
+{% block footer %}
+<a href="{{ url_for('index') }}">Go back to home page.</a>
+{% endblock %}
