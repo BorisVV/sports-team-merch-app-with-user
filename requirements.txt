@@ -1,4 +1,4 @@
-#  install -r requirements.txt
+
 
 Flask==0.12.2
 Flask-OpenID==1.2.5
@@ -7,3 +7,6 @@ Jinja2==2.10
 python3-openid==3.1.0
 SQLAlchemy==1.2.2
 Werkzeug==0.14.1
+Genshi
+Whoosh
+python-openid

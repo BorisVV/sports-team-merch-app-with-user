@@ -2,3 +2,6 @@ env
 *.db
 *.pyc
 *__pycache__/
+*.woosh
+*.egg-info
+.idea/
