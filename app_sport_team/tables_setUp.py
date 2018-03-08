@@ -7,8 +7,8 @@ from sqlalchemy import \
 from sqlalchemy.orm import \
             relationship, sessionmaker, scoped_session, backref
 from sqlalchemy.ext.declarative import declarative_base
-
 from flask import url_for, Markup
+from werkzeug import generate_password_hash, check_password_hash
 
 from app_sport_team import app
 
@@ -34,12 +34,21 @@ Base.query = db_session.query_property()
 class User(Base):
     __tablename__ = 'users'
     id = Column(Integer, primary_key=True)
-    name = Column(String(200))
-    password = Column(String(200))
+    name = Column(String(100))
+    email = Column(String(100))
+    pwdhash = Column(String(54))
 
-    def __init__(self, name, open_id):
-        self.name = name
-        self.password = password
+    def __init__(self, name, email, password):
+        self.name = name.title()
+        self.email = email.lower()
+        self.set_password(password)
+
+    def set_password(self, password):
+        self.pwdhash = generate_password_hash(password)
+
+    def check_password(self, password):
+        return check_password_hash(self.pwdhash, password)
+
 
     def to_json(self):
         return dict(name=self.name, is_admin=self.is_admin)

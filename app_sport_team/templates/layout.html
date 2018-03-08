@@ -18,6 +18,10 @@
     <div class="content">
       {% block content %}{% endblock %}
 
+      <div class="signup-content">
+        <h4><a href="{{ url_for('signUp') }}">Sign UP</a></h4>
+      </div>
+
       {% with messages = get_flashed_messages() %}
       {% if messages %}
       <ul class=flashes>

@@ -5,8 +5,10 @@ from flask import Blueprint, \
 
 from app_sport_team import app
 from app_sport_team.tables_setUp import \
-            db_session, MerchandiseItems, SoldRecords, GamesDates
+            db_session, MerchandiseItems, SoldRecords, GamesDates, User
+
 from app_sport_team import utils
+from app_sport_team.forms import SignupForm
 
 # For example purpose, this is the first pages displayed.
 # :flash: In the base.html there is a block inside the body block that exexutes
@@ -15,6 +17,16 @@ from app_sport_team import utils
 @app.route('/')
 def index(): # TODO: remove in future.
     return render_template('index.html')
+
+@app.route('/signUp', methods=['GET', 'POST'])
+def signUp():
+    form = SignupForm()
+
+    if request.method == 'POST':
+        return 'Success'
+        
+    return render_template('signUp.html', form=form)
+
 
 # User can enter new items, form is displayed.
 @app.route('/addItems/', methods=['GET', 'POST'])
