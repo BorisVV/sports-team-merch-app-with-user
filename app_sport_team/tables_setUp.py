@@ -31,6 +31,29 @@ def init_db():
 Base = declarative_base()
 Base.query = db_session.query_property()
 
+class User(Base):
+    __tablename__ = 'users'
+    id = Column(Integer, primary_key=True)
+    name = Column(String(200))
+    password = Column(String(200))
+
+    def __init__(self, name, open_id):
+        self.name = name
+        self.password = password
+
+    def to_json(self):
+        return dict(name=self.name, is_admin=self.is_admin)
+
+    @property
+    def is_admin(self):
+        return self.open_id in app.config['ADMINS']
+
+    def __eq__(self, other):
+        return type(self) is type(other) and self.id == other.id
+
+    def __ne__(self, other):
+        return not self.__eq__(other)
+
 class MerchandiseItems(Base):
     ''' This class is for the brand for the merchandises'''
     # Name of table

@@ -1,6 +1,6 @@
 
 from datetime import datetime
-from flask import \
+from flask import Blueprint, \
         render_template, redirect, url_for, abort, request, flash
 
 from app_sport_team import app
@@ -59,7 +59,7 @@ def displayItems():
 
 @app.route('/editItems/', methods=['GET', 'POST'])
 def editItems():
-    
+
     items = MerchandiseItems.query.all()
 
     if request.method == 'POST':
