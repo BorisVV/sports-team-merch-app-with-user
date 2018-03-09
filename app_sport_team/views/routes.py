@@ -1,14 +1,14 @@
 
 from datetime import datetime
-from flask import Blueprint, \
-        render_template, redirect, url_for, abort, request, flash
+from flask import Blueprint, render_template, redirect, url_for, \
+                    abort, request, flash, session
 
 from app_sport_team import app
 from app_sport_team.tables_setUp import \
             db_session, MerchandiseItems, SoldRecords, GamesDates, User
 
 from app_sport_team import utils
-from app_sport_team.forms import SignupForm
+from app_sport_team.forms import SignupForm, LoginForm
 
 # For example purpose, this is the first pages displayed.
 # :flash: In the base.html there is a block inside the body block that exexutes
@@ -23,10 +23,36 @@ def signUp():
     form = SignupForm()
 
     if request.method == 'POST':
-        return 'Success'
-        
+        if form.validate() == False:
+            return render_template('signUp.html', form=form)
+        else:
+            new_user = User(form.name.data, form.email.data, form.password.data)
+            db_session.add(new_user)
+
+            session['email'] = new_user.email
+            return redirect(url_for('index'))
+
     return render_template('signUp.html', form=form)
 
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    form = LoginForm()
+
+    if request.method == 'POST':
+        if form.validate() == False:
+            return render_template('login.html', form=form)
+        else:
+            email = form.email.data
+            password = form.password.data
+
+            user = User.query.filter_by(email=email).first()
+            if user is not None and user.check_password(password):
+                session['email'] = form.email.data
+                return redirect(url_for('index'))
+            else:
+                return redirect(url_for('login'))
+    return render_template('login.html', form=form)
 
 # User can enter new items, form is displayed.
 @app.route('/addItems/', methods=['GET', 'POST'])

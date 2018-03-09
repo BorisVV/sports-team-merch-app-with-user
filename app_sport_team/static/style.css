@@ -19,3 +19,14 @@ table, th, td {
   border-collapse: collapse;
   padding: 8px;
 }
+
+.section-content {
+  border-style: double;
+  width: 36%; 
+  background-color: lightblue;
+  padding: 1.5em;
+}
+
+.error-message {
+  color: red;
+}

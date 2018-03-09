@@ -21,6 +21,9 @@
       <div class="signup-content">
         <h4><a href="{{ url_for('signUp') }}">Sign UP</a></h4>
       </div>
+      <div class="login-content">
+        <h4><a href="{{ url_for('login') }}">Login</a></h4>
+      </div>
 
       {% with messages = get_flashed_messages() %}
       {% if messages %}
@@ -47,7 +50,6 @@
     </div>
 
     <div class="notes_footer">
-      {% block notes %}{% endblock %}
       <p>Created by: BorisVV</p>
       <a href="http://jinja.pocoo.org/docs/2.10/api/#basics">jinja...#basics</a><br>
       <a href="http://flask.pocoo.org/">flask.pocoo.org</a>
