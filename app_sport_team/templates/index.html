@@ -11,3 +11,12 @@
     Below are the links to the different options.
   </p>
 {% endblock %}
+
+{% block footer %}
+  <a href="{{ url_for('displayItems') }}">Display Items</a><br>
+  <a href="{{ url_for('displayGameSched') }}">Display Game's Dates</a><br>
+  <a href="{{ url_for('displaySoldRecords') }}"> Display Sold Records</a><br>
+  <a href="{{ url_for('addItems') }}">Add Items</a><br>
+  <a href="{{ url_for('addDates') }}">Add Dates for Games</a><br>
+  <a href="{{ url_for('addSoldRecord') }}">Add Sold Record</a><br>
+{% endblock %}

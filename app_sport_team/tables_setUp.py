@@ -35,8 +35,8 @@ class User(Base):
     __tablename__ = 'users'
     id = Column(Integer, primary_key=True)
     name = Column(String(100))
-    email = Column(String(100))
-    pwdhash = Column(String(54))
+    email = Column(String(100), unique=True)
+    pwdhash = Column(String(54), unique=True)
 
     def __init__(self, name, email, password):
         self.name = name.title()
@@ -53,9 +53,9 @@ class User(Base):
     def to_json(self):
         return dict(name=self.name, is_admin=self.is_admin)
 
-    @property
-    def is_admin(self):
-        return self.open_id in app.config['ADMINS']
+    # @property
+    # def is_admin(self):
+    #     return self.open_id in app.config['ADMINS']
 
     def __eq__(self, other):
         return type(self) is type(other) and self.id == other.id

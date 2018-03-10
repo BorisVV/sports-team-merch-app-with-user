@@ -1,13 +1,14 @@
 
 from datetime import datetime
 from flask import Blueprint, render_template, redirect, url_for, \
-                    abort, request, flash, session
+                    abort, request, flash, session, g
 
 from app_sport_team import app
 from app_sport_team.tables_setUp import \
             db_session, MerchandiseItems, SoldRecords, GamesDates, User
 
 from app_sport_team import utils
+from app_sport_team.utils import requires_login
 from app_sport_team.forms import SignupForm, LoginForm
 
 # For example purpose, this is the first pages displayed.
@@ -28,6 +29,7 @@ def signUp():
         else:
             new_user = User(form.name.data, form.email.data, form.password.data)
             db_session.add(new_user)
+            db_session.commit()
 
             session['email'] = new_user.email
             return redirect(url_for('index'))
@@ -40,19 +42,32 @@ def login():
     form = LoginForm()
 
     if request.method == 'POST':
+        # This will make sure that the user gets the sign in page.
         if form.validate() == False:
             return render_template('login.html', form=form)
         else:
+            # Collect the inputs in the form.
             email = form.email.data
             password = form.password.data
 
+            # This queries the User's table and pulls the email of the user if valid.
             user = User.query.filter_by(email=email).first()
             if user is not None and user.check_password(password):
+                # returns a valid email and a valid password.
                 session['email'] = form.email.data
+                # Once validated, sent the user back to home page.
                 return redirect(url_for('index'))
             else:
+                flash('No match found, check you email or password! <br> Try again or SignUP.')
                 return redirect(url_for('login'))
     return render_template('login.html', form=form)
+
+@app.route('/logout')
+def logout():
+    # This ends the session, and will display the logout message.
+    session.pop('email')
+    flash('<h2>You have log out succesfully</h2>')
+    return redirect(url_for('index'))
 
 # User can enter new items, form is displayed.
 @app.route('/addItems/', methods=['GET', 'POST'])
@@ -96,6 +111,7 @@ def displayItems():
     return render_template('displayItems.html', items=items)
 
 @app.route('/editItems/', methods=['GET', 'POST'])
+@requires_login
 def editItems():
 
     items = MerchandiseItems.query.all()
@@ -150,6 +166,7 @@ def editItems():
     return render_template('editItems.html', items=items)
 
 @app.route('/addDates/', methods=['GET', 'POST'])
+@requires_login
 def addDates():
     # Collect the date, city and state for the game.
     if request.method == 'POST':
@@ -198,7 +215,8 @@ def displayGameSched():
         return redirect(url_for('addDates'))
     return render_template('displayGameSched.html', _dates=_dates)
 
-@app.route('/editDates/<int:id>/', methods=['GET', 'POST'])
+@app.route('/tes/<int:id>/', methods=['GET', 'POST'])
+@requires_login
 def editDates(id):
     sched = GamesDates.query.get(id)
     dates_in_soldRecords = SoldRecords.query.filter_by(date_id=id).all()
@@ -261,6 +279,7 @@ def editDates(id):
     return render_template('editDates.html', form=form, sched=sched)
 
 @app.route('/addSoldRecord/', methods=['GET', 'POST'])
+@requires_login
 def addSoldRecord():
     items = MerchandiseItems.query.all()
     _dates = GamesDates.query.all()
@@ -345,6 +364,7 @@ def displaySoldRecords():
     return render_template('displaySoldRecords.html', itemsSold=itemsSold)
 
 @app.route('/editSoldRecords/<int:id>/', methods=['GET', 'POST'])
+@requires_login
 def editSoldRecords(id):
     # id is from the displaySoldRecords.html
     modifySold = SoldRecords.query.get(id)
@@ -368,12 +388,12 @@ def editSoldRecords(id):
             return redirect(url_for('displaySoldRecords'))
 
         else:
-            # print('date', date_id, 'item', item_id, 'qty', qty, 'price', price)
-            # print('modidfadsf', modifySold, modifySold.date_id, modifySold.item_id)
             # The table takes a float for price, try/except is very handy here.
             try:
+                # price is in a string format and needs to be converted to float.
                 price = float(price)
 
+                # If the user doesn't change anything, there's no need for db_session.
                 if date_id == modifySold.date_id and \
                         item_id == modifySold.item_id and \
                         qty == modifySold.qty and \
@@ -381,6 +401,7 @@ def editSoldRecords(id):
                     flash('Ther were no changes made!')
                     return redirect(url_for('displaySoldRecords'))
 
+                # This will also will only update the changes made.
                 elif date_id == modifySold.date_id and \
                         item_id == modifySold.item_id and \
                         qty != modifySold.qty or \
@@ -391,6 +412,8 @@ def editSoldRecords(id):
                     flash('Either quantity/price or both were succesfully updated!')
                     return redirect(url_for('displaySoldRecords'))
                 else:
+                    # Verify that if the change was made to date or item, the db. will
+                    # need to update the row in SoldRecords with new date or item.
                     no_matched = True
                     for row in SoldRecords.query.all():
                         if date_id == row.date_id and item_id == row.item_id:
@@ -398,6 +421,7 @@ def editSoldRecords(id):
                             flash('{} and {} already in sold rec "{}" and "{}"'.format(date_id, item_id, modifySold, row))
                             return render_template('editSoldRecords.html', _dates=_dates, names=names, modifySold=modifySold)
                     if no_matched:
+                        # only change the quantity or the price changed.
                         modifySold.date_id = date_id
                         modifySold.item_id = item_id
                         modifySold.qty = qty
@@ -406,6 +430,7 @@ def editSoldRecords(id):
                         flash('Data was updated succesfully!!')
                         return redirect(url_for('displaySoldRecords'))
             except Exception as e:
+                # This will raise if the text input is not convertible to float.
                 db_session.rollback()
                 flash('Error  <br>'+ str(e))
                 return redirect(url_for('displaySoldRecords'))

@@ -1,5 +1,7 @@
 {% extends "layout.html" %}
 {% block title %}Login{% endblock %}
+{% block loginContent %}{% endblock %}
+
 {% block content %}
   <main>
     <div class="section-content">
@@ -30,10 +32,12 @@
         {{ form.submit(class="btn-primary") }}
 
       </form>
+      <p>or</p>
+      <h4><a href="{{ url_for('signUp') }}">SignUP</a></h4>
     </div>
   </main>
 
 {% endblock %}
 {% block footer %}
-<a href="{{ url_for('index') }}">Go back to home page.</a>
+  <a href="{{ url_for('index') }}">Go back to home page.</a>
 {% endblock %}

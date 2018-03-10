@@ -9,6 +9,6 @@ class SignupForm(Form):
     submit = SubmitField('Submit')
 
 class LoginForm(Form):
-    email = StringField('Email', validators=[DataRequired("Please enter your email address"), Email("Please enter you email address")])
+    email = StringField('Email', validators=[DataRequired("Please enter your email address"), Email("Please enter a valid email address")])
     password = PasswordField('Password', validators=[DataRequired("Please enter a password")])
     submit = SubmitField("Sign in")

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <title>{% block title %}Welcome{% endblock %}</title>
     {% block head %}
       <link rel="stylesheet" \
             href="{{ url_for('static', filename='style.css') }}">
@@ -10,43 +11,43 @@
       <script type=text/javascript \
       src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js">
       </script>
-      <title>{% block title %}Welcome{% endblock %}</title>
+
+      {% block loginContent %}
+        {% if 'email' not in session %}
+          <div class="login-signup-content">
+            <h4><a href="{{ url_for('login') }}">Login</a></h4>
+            <h4><a href="{{ url_for('signUp') }}">SignUP</a></h4>
+          </div>
+        {% else %}
+          <div class="login-signup-content">
+            <p>You are logged-in</p>
+            <h4><a href="{{ url_for('logout') }}">Logout</a></h4>
+          </div>
+        {% endif %}
+      {% endblock %}
     {% endblock %}
   </head>
 
   <body>
     <div class="content">
       {% block content %}{% endblock %}
-
-      <div class="signup-content">
-        <h4><a href="{{ url_for('signUp') }}">Sign UP</a></h4>
+      <div class="messages">
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <ul class=flashes>
+          {% for message in messages %}
+          <li>{{ message|safe }}</li>
+          {% endfor %}
+        </ul>
+        {% endif %}
+        {% endwith %}
       </div>
-      <div class="login-content">
-        <h4><a href="{{ url_for('login') }}">Login</a></h4>
-      </div>
-
-      {% with messages = get_flashed_messages() %}
-      {% if messages %}
-      <ul class=flashes>
-        {% for message in messages %}
-        <li>{{ message|safe }}</li>
-        {% endfor %}
-      </ul>
-      {% endif %}
-      {% endwith %}
     </div>
   </body>
 
   <footer>
     <div class="footer">
-      {% block footer %}
-        <a href="{{ url_for('addItems') }}">Add an Items</a><br>
-        <a href="{{ url_for('addDates') }}">Add Dates for Games</a><br>
-        <a href="{{ url_for('addSoldRecord') }}">Add Sold Record</a><br>
-        <a href="{{ url_for('displayItems') }}">Display/Edit Items</a><br>
-        <a href="{{ url_for('displayGameSched') }}">Display/Edit Game's Dates</a><br>
-        <a href="{{ url_for('displaySoldRecords') }}"> Display/Edit Sold Records</a><br>
-      {% endblock %}
+      {% block footer %}{% endblock %}
     </div>
 
     <div class="notes_footer">
