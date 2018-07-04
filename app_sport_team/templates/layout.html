@@ -11,20 +11,6 @@
       <script type=text/javascript \
       src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js">
       </script>
-
-      {% block loginContent %}
-        {% if 'email' not in session %}
-          <div class="login-signup-content">
-            <h4><a href="{{ url_for('login') }}">Login</a></h4>
-            <h4><a href="{{ url_for('signUp') }}">SignUP</a></h4>
-          </div>
-        {% else %}
-          <div class="login-signup-content">
-            <p>You are logged-in</p>
-            <h4><a href="{{ url_for('logout') }}">Logout</a></h4>
-          </div>
-        {% endif %}
-      {% endblock %}
     {% endblock %}
   </head>
 

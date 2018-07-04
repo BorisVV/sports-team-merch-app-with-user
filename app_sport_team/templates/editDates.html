@@ -3,47 +3,59 @@
 {% block title %}editDates{% endblock %}
 
 {% block content %}
-<script type=text/javascript>
-$(function() {
-  $('input[name="delete"]').click(function() {
-    if (!confirm("Do you really want to delete this Item?\n\n" +
-                "!!!WARNING!!! \n\n" +
-                "THIS WILL DELETE THE DATES IN SOLD RECORDS AS WELL."))
-    return false;
-  });
-});
-</script>
-  <h2>Edit/Delete Dates...</h2>
-  <h4>You have the choice to edit or delete the selected date.</h4>
-  <p>Warning!!!</p>
-  <p>
-    Deleting the game's date will delete rows that have this date in Sold Records.<br>
-    <sup><a href="{{ url_for('displaySoldRecords') }}">Go to Sold Records</a> </sup>
-  </p>
-  <form method="post">
-    <dd>
-      <dl>
-        Date: <br>
-        <input type="date" name="date" value="{{ form['_date']|dateformat }}">
-        <sup>original date "{{ sched._date|dateformat }}"</sup>
-        <br><br>
-        City: <br>
-        <input type="text" name="city" value="{{ form['city'] }}" required>
-        <sup>original date "{{ sched.city }}"</sup>
-        <br><br>
-        State: <br>
-        <input type="text" name="state" value="{{ form['state'] }}" required>
-        <sup>original date "{{ sched.state }}"</sup>
-        <br>
+  {% if 'email' not in session %}
+    <div class="logout-index">
+      <h4><a href="{{ url_for('login') }}">Login</a></h4>
+      <h4><a href="{{ url_for('signUp') }}">SignUP</a></h4>
+    </div>
+  {% else %}
+    <div class="logout-index">
+      <p>You're logged-in</p>
+      <h4><a href="{{ url_for('logout') }}">Logout</a></h4>
+    </div>
 
-        <br>
-        <input type="submit" name="uddate" value="Update">
-        <input type="submit" name="delete" value="Delete">
-        <input type="submit" name="cancel" value="Cancel">
-      </dl>
-      <a href="{{ url_for('displayGameSched') }}">Go to game's schedule</a>
-    </dd>
-  </form>
+    <script type=text/javascript>
+    $(function() {
+      $('input[name="delete"]').click(function() {
+        if (!confirm("Do you really want to delete this Item?\n\n" +
+        "!!!WARNING!!! \n\n" +
+        "THIS WILL DELETE THE DATES IN SOLD RECORDS AS WELL."))
+        return false;
+      });
+    });
+    </script>
+    <h2>Edit/Delete Dates...</h2>
+    <h4>You have the choice to edit or delete the selected date.</h4>
+    <p>Warning!!!</p>
+    <p>
+      Deleting the game's date will delete rows that have this date in Sold Records.<br>
+      <sup><a href="{{ url_for('displaySoldRecords') }}">Go to Sold Records</a> </sup>
+    </p>
+    <form method="post">
+      <dd>
+        <dl>
+          Date: <br>
+          <input type="date" name="date" value="{{ form['_date']|dateformat }}">
+          <sup>original date "{{ sched._date|dateformat }}"</sup>
+          <br><br>
+          City: <br>
+          <input type="text" name="city" value="{{ form['city'] }}" required>
+          <sup>original date "{{ sched.city }}"</sup>
+          <br><br>
+          State: <br>
+          <input type="text" name="state" value="{{ form['state'] }}" required>
+          <sup>original date "{{ sched.state }}"</sup>
+          <br>
+
+          <br>
+          <input type="submit" name="uddate" value="Update">
+          <input type="submit" name="delete" value="Delete">
+          <input type="submit" name="cancel" value="Cancel">
+        </dl>
+        <a href="{{ url_for('displayGameSched') }}">Go to game's schedule</a>
+      </dd>
+    </form>
+  {% endif %}
 {% endblock %}
 
 {% block footer %}

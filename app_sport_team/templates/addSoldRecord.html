@@ -2,60 +2,72 @@
 {% block title %}AddSoldRecord{% endblock %}
 
 {% block content %}
-  {% if _dates|count() == 0 %}
-      <h3>There are not records in db.</h3>
-      <p>Click on this link to
-        <a href="{{ url_for('addDates') }}">add dates?</a>
-      </p>
-  {% elif items|count() == 0 %}
-      <h3>There are items/names in the db.</h3>
-      <p>Click on this link to
-        <a href="{{ url_for('addItems') }}">add items?</a>
-      </p>
+  {% if 'email' not in session %}
+    <div class="logout-index">
+      <h4><a href="{{ url_for('login') }}">Login</a></h4>
+      <h4><a href="{{ url_for('signUp') }}">SignUP</a></h4>
+    </div>
   {% else %}
-    <h2>Add Sold Records...</h2>
-    <h5>First select the 'Date' and then an 'Item',<br>
-      then enter the quantity sold and the price per unit.
-    </h5>
+      <div class="logout-index">
+        <p>You're logged-in</p>
+        <h4><a href="{{ url_for('logout') }}">Logout</a></h4>
+      </div>
 
-    <form method="post">
-      <dd>
-        <dl>
-          <sub>Select date:</sub>
-          <br>
-          <select name="selected_date">
-            {% for date in _dates %}
-            <option value="{{ date.id }}" {% if date.id == date_id %} selected {% endif %}> {{ date._date|dateformat }} {{ date.city }} {{ date.state }}</option>
-            {% endfor %}
-          </select>
-          <sub><a href="{{ url_for('addDates') }}">add more dates</a></sub>
+    {% if _dates|count() == 0 %}
+        <h3>There are not records in db.</h3>
+        <p>Click on this link to
+          <a href="{{ url_for('addDates') }}">add dates?</a>
+        </p>
+    {% elif items|count() == 0 %}
+        <h3>There are items/names in the db.</h3>
+        <p>Click on this link to
+          <a href="{{ url_for('addItems') }}">add items?</a>
+        </p>
+    {% else %}
+      <h2>Add Sold Records...</h2>
+      <h5>First select the 'Date' and then an 'Item',<br>
+        then enter the quantity sold and the price per unit.
+      </h5>
 
-          <br>
-          <sub>Select item name:</sub>
-          <br>
-
-          <select name="selected_item" >
-            {% for item in items %}
-            <option value="{{ item.id }}" {% if item.id == item_id %} selected {% endif %}>
-              {{ item.name }} </option>
+      <form method="post">
+        <dd>
+          <dl>
+            <sub>Select date:</sub>
+            <br>
+            <select name="selected_date">
+              {% for date in _dates %}
+              <option value="{{ date.id }}" {% if date.id == date_id %} selected {% endif %}> {{ date._date|dateformat }} {{ date.city }} {{ date.state }}</option>
               {% endfor %}
             </select>
-            <sub><a href="{{ url_for('addItems') }}">add more items</a></sub>
+            <sub><a href="{{ url_for('addDates') }}">add more dates</a></sub>
 
             <br>
-            <dt><sub>*Enter the quantity sold:</sub></dt>
-            <input type="number" name="quantity" value="{{ qty or 0 }}" min="0" max="500" required placeholder="0"><br>
-            <dt><sub>*Enter the price per unit:</sub></dt>
-            <input type="text" name="price" value="{{ price or 0.0 }}" required placeholder="0.0">
-        </dl>
-        <br>
-        <sup>*Make sure not to leave boxes blank.</sup><br>
-        <input type="submit" name="save" value="Save">
-        <input type="submit" name="cancel" value="Cancel">
-        <br><br>
-        <a href="{{ url_for('displaySoldRecords') }}">Go to Sold Records.</a>
-      </dd>
-    </form>
+            <sub>Select item name:</sub>
+            <br>
+
+            <select name="selected_item" >
+              {% for item in items %}
+              <option value="{{ item.id }}" {% if item.id == item_id %} selected {% endif %}>
+                {{ item.name }} </option>
+                {% endfor %}
+              </select>
+              <sub><a href="{{ url_for('addItems') }}">add more items</a></sub>
+
+              <br>
+              <dt><sub>*Enter the quantity sold:</sub></dt>
+              <input type="number" name="quantity" value="{{ qty or 0 }}" min="0" max="500" required placeholder="0"><br>
+              <dt><sub>*Enter the price per unit:</sub></dt>
+              <input type="text" name="price" value="{{ price or 0.0 }}" required placeholder="0.0">
+          </dl>
+          <br>
+          <sup>*Make sure not to leave boxes blank.</sup><br>
+          <input type="submit" name="save" value="Save">
+          <input type="submit" name="cancel" value="Cancel">
+          <br><br>
+          <a href="{{ url_for('displaySoldRecords') }}">Go to Sold Records.</a>
+        </dd>
+      </form>
+    {% endif %}
   {% endif %}
 {% endblock %}
 

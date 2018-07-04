@@ -35,7 +35,8 @@ table, th, td {
   color: red;
 }
 
-.login-signup-content {
-  text-align: center;
-  width:  auto;
+.logout-index {
+  position: absolute;
+  top: 60px;
+  right: 80px;
 }

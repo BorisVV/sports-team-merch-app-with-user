@@ -17,7 +17,8 @@ from app_sport_team.forms import SignupForm, LoginForm
 # will display messages for users to read and correct inputs, etc.
 @app.route('/')
 def index(): # TODO: remove in future.
-    return render_template('index.html')
+    users = User.query.all()
+    return render_template('index.html', users=users)
 
 @app.route('/signUp', methods=['GET', 'POST'])
 def signUp():
@@ -71,6 +72,7 @@ def logout():
 
 # User can enter new items, form is displayed.
 @app.route('/addItems/', methods=['GET', 'POST'])
+@requires_login
 def addItems():
     items = MerchandiseItems.query.all()
     if request.method == 'POST':
