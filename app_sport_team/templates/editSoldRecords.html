@@ -2,81 +2,69 @@
 {% block title %}EditSoldRecord{% endblock %}
 
 {% block content %}
-  {% if 'email' not in session %}
-    <div class="logout-index">
-      <h4><a href="{{ url_for('login') }}">Login</a></h4>
-      <h4><a href="{{ url_for('signUp') }}">SignUP</a></h4>
-    </div>
-  {% else %}
-      <div class="logout-index">
-        <p>You're logged-in</p>
-        <h4><a href="{{ url_for('logout') }}">Logout</a></h4>
-      </div>
-      
-      <script type=text/javascript>
-      $(function() {
-        $('input[name="delete"]').click(function() {
-          if (!confirm("Do you really want to delete this record?\n\n" +
-          "THIS WILL DELETE THE COMPLETE ROW (RECORDS)."))
-          return false;
-        });
-      });
-      </script>
+  <script type=text/javascript>
+  $(function() {
+    $('input[name="delete"]').click(function() {
+      if (!confirm("Do you really want to delete this record?\n\n" +
+      "THIS WILL DELETE THE COMPLETE ROW (RECORDS)."))
+      return false;
+    });
+  });
+  </script>
 
-      <h2>Edit/Delete Sold Records...</h2>
-      <p>Warning! Deleting the row will only delete it on the Sold Record table.</p>
-      <p>To delete a date click
-        <a href="{{ url_for('editDates', id=modifySold.schedules.id) }}">here</a>
-      </p>
-      <p>To delete a name click
-        <a href="{{ url_for('editItems') }}">here</a>
-      </p>
+  <h2>Edit/Delete Sold Records...</h2>
+  <p>Warning! Deleting the row will only delete it on the Sold Record table.</p>
+  <p>To delete a date click
+    <a href="{{ url_for('editDates', id=modifySold.schedules.id) }}">here</a>
+  </p>
+  <p>To delete a name click
+    <a href="{{ url_for('editItems') }}">here</a>
+  </p>
 
-      <form method="post">
-        <dd>
-          <dl>
-            Date:<br>
-            <select name="date_selected">
-              {% for date in _dates %}
-              <option value="{{ date.id }}" {% if date.id == modifySold.date_id %} selected {% endif %}>
-                {{ date._date|dateformat }} {{  date.city }} {{ date.state}}
-              </option>
-              {% endfor %}
-            </select>
-            <sup>Updating "{{ modifySold.schedules._date|dateformat }}"</sup>
-            <br><br>
+  <form method="post">
+    <dd>
+      <dl>
+        Date:<br>
+        <select name="date_selected">
+          {% for date in _dates %}
+          <option value="{{ date.id }}" {% if date.id == modifySold.date_id %} selected {% endif %}>
+            {{ date._date|dateformat }} {{  date.city }} {{ date.state}}
+          </option>
+          {% endfor %}
+        </select>
+        <sup>Updating "{{ modifySold.schedules._date|dateformat }}"</sup>
+        <br><br>
 
-            Name:<br>
-            <select name="name_selected">
-              {% for name in names %}
-              <option value="{{ name.id }}" {% if name.id == modifySold.item_id %} selected {% endif %}>
-                {{ name.name }}
-              </option>
-              {% endfor %}
-            </select>
-            <sup>Updating "{{ modifySold.items.name }}"</sup>
-            <br><br>
+        Name:<br>
+        <select name="name_selected">
+          {% for name in names %}
+          <option value="{{ name.id }}" {% if name.id == modifySold.item_id %} selected {% endif %}>
+            {{ name.name }}
+          </option>
+          {% endfor %}
+        </select>
+        <sup>Updating "{{ modifySold.items.name }}"</sup>
+        <br><br>
 
-            <dt><sub>Quantity:</sub></dt>
-            <input type="number" name="quantity" value="{{ modifySold.qty }}" min="0" max="500" required placeholder="0">
-            <sup>Updating "{{ modifySold.qty }}"</sup>
-            <br><br>
+        <dt><sub>Quantity:</sub></dt>
+        <input type="number" name="quantity" value="{{ modifySold.qty }}" min="0" max="500" required placeholder="0">
+        <sup>Updating "{{ modifySold.qty }}"</sup>
+        <br><br>
 
-            <dt><sub>Price:</sub></dt>
-            <input type="text" name="price" value="{{ modifySold.price }}" min="0" required placeholder="0.00">
-            <sup>Updating "{{ modifySold.price }}"</sup>
-            <br><br>
+        <dt><sub>Price:</sub></dt>
+        <input type="text" name="price" value="{{ modifySold.price }}" min="0" required placeholder="0.00">
+        <sup>Updating "{{ modifySold.price }}"</sup>
+        <br><br>
 
-            <input type="submit" name="update" value="Update">
-            <input type="submit" name="delete" value="Delete">
-            <input type="submit" name="cancel" value="Cancel">
-          </dl>
-          <a href="{{ url_for('displaySoldRecords') }}">Go back to Records.</a>
-        </dd>
-      </form>
-  {% endif %}
-
+        <input type="submit" name="update" value="Update">
+        <input type="submit" name="delete" value="Delete">
+        <input type="submit" name="cancel" value="Cancel">
+      </dl>
+      <a href="{{ url_for('displaySoldRecords') }}">Go back to Records.</a>
+    </dd>
+  </form>
 {% endblock %}
+
 {% block footer %}
 <a href="{{ url_for('index') }}">Go back to home page.</a>
 {% endblock %}

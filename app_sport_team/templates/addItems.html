@@ -2,32 +2,20 @@
 {% block title %}addItems{% endblock %}
 
 {% block content %}
-  {% if 'email' not in session %}
-    <div class="logout-index">
-      <h4><a href="{{ url_for('login') }}">Login</a></h4>
-      <h4><a href="{{ url_for('signUp') }}">SignUP</a></h4>
-    </div>
-  {% else %}
-    <div class="logout-index">
-      <p>You're logged-in</p>
-      <h4><a href="{{ url_for('logout') }}">Logout</a></h4>
-    </div>
-
-    <h2>Add Items...</h2>
-    <form method=post>
-      <dd>
-        <dl>
-          <dt>Enter the item's name:</dt>
-          <input type="text" name="name" value="{{ new_name }}" size="30">
-          <p>
-            <input type="submit" value="Save">
-            <input type="submit" name="cancel" value="Cancel">
-          </dl>
-          <a href="{{ url_for('displayItems') }}">Display all items.</a><br>
-          <a href="{{ url_for('addSoldRecord') }}">Go to add sold records.</a>
-        </dd>
-      </form>
-  {% endif %}
+  <h2>Add Items...</h2>
+  <form method=post>
+    <dd>
+      <dl>
+        <dt>Enter the item's name:</dt>
+        <input type="text" name="name" value="{{ new_name }}" size="30">
+        <p>
+          <input type="submit" value="Save">
+          <input type="submit" name="cancel" value="Cancel">
+        </dl>
+        <a href="{{ url_for('displayItems') }}">Display all items.</a><br>
+        <a href="{{ url_for('addSoldRecord') }}">Go to add sold records.</a>
+      </dd>
+    </form>
 {% endblock %}
 
 {% block footer %}

@@ -9,12 +9,7 @@
       This is the database to store sold items and prices
       for games played in a selected date.<br>
     </p>
-  {% endif %}
-  {% if 'email' in session %}
-    <div class="logout-index">
-      <p>You're logged-in</p>
-      <h3><a href="{{ url_for('logout') }}">Logout</a></h3>
-    </div>
+  {% else %}
     <h1>HOME PAGE</h1>
   {% endif %}
   <p>
