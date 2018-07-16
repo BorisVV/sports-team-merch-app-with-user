@@ -1,6 +1,6 @@
 click==6.7
 defusedxml==0.5.0
-Flask==0.12.2
+Flask==1.0.2
 Flask-OpenID==1.2.5
 Flask-SQLAlchemy==2.3.2
 Flask-WTF==0.14.2
@@ -11,7 +11,11 @@ MarkupSafe==1.0
 pkg-resources==0.0.0
 python-openid==2.2.5
 python3-openid==3.1.0
-SQLAlchemy==1.2.2
+SQLAlchemy==1.2.10
 Werkzeug==0.14.1
 Whoosh==2.7.4
-WTForms==2.1
+WTForms==2.2.1
+pur==5.0.0
+flask-wtf-0.14.2
+wtforms-2.2.1
+wtforms-2.2.1
